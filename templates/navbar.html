@@ -1,0 +1,17 @@
+<ul class="flex space-x-4">
+  <li><a href="/" class="hover:text-[#C6002F]">Home</a></li>
+  {% if session['role'] == 'admin' %}
+    <li><a href="{{ url_for('admin_dashboard') }}" class="hover:text-[#C6002F]">Dashboard</a></li>
+    <li><a href="{{ url_for('product_upload') }}" class="hover:text-[#C6002F]">Products</a></li>
+    <li><a href="{{ url_for('user_creation') }}" class="hover:text-[#C6002F]">Users</a></li>
+    <li><a href="{{ url_for('settings') }}" class="hover:text-[#C6002F]">Settings</a></li>
+    <li><a href="{{ url_for('analytics') }}" class="hover:text-[#C6002F]">Analytics</a></li>
+  {% elif session['role'] == 'mr' %}
+    <li><a href="{{ url_for('gallery') }}" class="hover:text-[#C6002F]">Gallery</a></li>
+    <li><a href="{{ url_for('doctor_list') }}" class="hover:text-[#C6002F]">Doctors</a></li>
+    <li><a href="{{ url_for('change_password') }}" class="hover:text-[#C6002F]">Change Password</a></li>
+  {% elif session['role'] == 'viewer' %}
+    <li><a href="{{ url_for('gallery') }}" class="hover:text-[#C6002F]">Gallery</a></li>
+  {% endif %}
+  <li><a href="{{ url_for('logout') }}" class="hover:text-[#C6002F]">Logout</a></li>
+</ul> 

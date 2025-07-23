@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Product Upload{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Product Upload</h1>
+<form class="bg-white p-6 rounded-lg shadow-md max-w-xl mx-auto space-y-4" method="post" enctype="multipart/form-data">
+  <div class="mb-4">
+    <label class="block font-semibold mb-1">Category</label>
+    <select class="w-full border rounded px-3 py-2" name="category" required>
+      {% for category in categories %}
+        <option value="{{ category }}">{{ category }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-4">
+    <label class="block font-semibold mb-1">Upload JPG/PDF</label>
+    <div class="flex items-center justify-center w-full">
+      <label for="file-upload" class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded cursor-pointer bg-gray-50 hover:bg-gray-100">
+        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+          <svg aria-hidden="true" class="w-8 h-8 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4a1 1 0 011-1h8a1 1 0 011 1v12m-4 4h-4a1 1 0 01-1-1v-4h6v4a1 1 0 01-1 1z"/></svg>
+          <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+          <p class="text-xs text-gray-500">JPG, PDF (max 10MB)</p>
+        </div>
+        <input id="file-upload" type="file" class="hidden" name="product_file" accept=".jpg,.jpeg,.pdf" required />
+      </label>
+    </div>
+  </div>
+  <button class="bg-[#005A9C] text-white px-6 py-2 rounded hover:bg-blue-700 transition">Upload Product</button>
+</form>
+{% endblock %} 

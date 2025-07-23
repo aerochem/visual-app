@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctors - PDA App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+    <style>
+      .doctor-card .card { min-height: 100%; }
+      .doctor-card .btn { margin-bottom: 4px; }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Doctors</h2>
+        <a href="{{ url_for('add_doctor') }}" class="btn btn-primary">Add Doctor</a>
+    </div>
+    <!-- Search and Filter Bar -->
+    <div class="row mb-4">
+      <div class="col-md-6 mb-2 mb-md-0">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search by name, specialty, or area...">
+      </div>
+      <div class="col-md-3 mb-2 mb-md-0">
+        <select id="specialtyFilter" class="form-select">
+          <option value="">All Specialties</option>
+          {% set specialties = doctors|map(attribute=2)|unique|list %}
+          {% for specialty in specialties if specialty %}
+            <option value="{{ specialty|lower }}">{{ specialty }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-3">
+        <select id="areaFilter" class="form-select">
+          <option value="">All Areas</option>
+          {% set areas = doctors|map(attribute=3)|unique|list %}
+          {% for area in areas if area %}
+            <option value="{{ area|lower }}">{{ area }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <!-- Doctor Cards Grid -->
+    <div class="row" id="doctorCards">
+      {% for doctor in doctors %}
+      <div class="col-md-4 mb-4 doctor-card" data-name="{{ doctor[1]|lower }}" data-specialty="{{ doctor[2]|lower }}" data-area="{{ doctor[3]|lower }}">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ doctor[1] }}</h5>
+            <p class="card-text text-muted">{{ doctor[2] }}, {{ doctor[3] }}</p>
+            <div class="mb-2"><span class="fw-bold">Contact:</span> {{ doctor[4] or '-' }}</div>
+            <div class="mb-2"><span class="fw-bold">Email:</span> {{ doctor[5] or '-' }}</div>
+            <div class="d-flex justify-content-between flex-wrap mb-2">
+              <a href="{{ url_for('edit_doctor', doctor_id=doctor[0]) }}" class="btn btn-sm btn-primary">🖊 Edit</a>
+              {% if role == 'admin' %}
+              <form action="{{ url_for('delete_doctor', doctor_id=doctor[0]) }}" method="post" style="display:inline;">
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this doctor?');">🗑 Delete</button>
+              </form>
+              {% endif %}
+              <a href="{{ url_for('doctor_slideshow', doctor_id=doctor[0]) }}" class="btn btn-sm btn-secondary" target="_blank">📽 Slideshow</a>
+              <button class="btn btn-sm btn-outline-info" data-bs-toggle="collapse" data-bs-target="#mapForm-{{ doctor[0] }}">
+                🔗 Map Products
+              </button>
+            </div>
+            <!-- Collapsible Mapping Form -->
+            <div class="collapse mt-3" id="mapForm-{{ doctor[0] }}">
+              <form action="/doctors/{{ doctor[0] }}/products" method="post">
+                <label class="form-label mt-2">Assign Products:</label>
+                <select class="form-select choices-multiple" name="product_ids" multiple>
+                  {% for product in all_products %}
+                    <option value="{{ product[0] }}" {% if product[0] in doctor_mapped_ids[doctor[0]] %}selected{% endif %}>{{ product[1] }}</option>
+                  {% endfor %}
+                </select>
+                <button class="btn btn-success btn-sm mt-2">✅ Save Mapping</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <div class="col-12"><em>No doctors found.</em></div>
+      {% endfor %}
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+<script>
+// Choices.js initialization
+  document.querySelectorAll('.choices-multiple').forEach(function(select) {
+    new Choices(select, { removeItemButton: true, shouldSort: false });
+  });
+// Search and filter logic
+const searchInput = document.getElementById('searchInput');
+const specialtyFilter = document.getElementById('specialtyFilter');
+const areaFilter = document.getElementById('areaFilter');
+const cards = document.querySelectorAll('.doctor-card');
+function filterCards() {
+  const searchVal = searchInput.value.toLowerCase();
+  const specialtyVal = specialtyFilter.value;
+  const areaVal = areaFilter.value;
+  cards.forEach(card => {
+    const name = card.dataset.name;
+    const specialty = card.dataset.specialty;
+    const area = card.dataset.area;
+    const matchesSearch = !searchVal || name.includes(searchVal) || specialty.includes(searchVal) || area.includes(searchVal);
+    const matchesSpecialty = !specialtyVal || specialty === specialtyVal;
+    const matchesArea = !areaVal || area === areaVal;
+    card.style.display = (matchesSearch && matchesSpecialty && matchesArea) ? '' : 'none';
+  });
+}
+searchInput.addEventListener('input', filterCards);
+specialtyFilter.addEventListener('change', filterCards);
+areaFilter.addEventListener('change', filterCards);
+</script>
+</body>
+</html> 

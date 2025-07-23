@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Gallery - PDA App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Product Gallery</h2>
+    <!-- Add category filter pills above the gallery grid -->
+    <div class="mb-3">
+        <span class="me-2">Filter by Category:</span>
+        <a href="{{ url_for('gallery') }}" class="btn btn-sm {% if not selected_category %}btn-primary{% else %}btn-outline-primary{% endif %}">All</a>
+        {% for cat in categories %}
+            <a href="{{ url_for('gallery', category=cat[0]) }}" class="btn btn-sm {% if selected_category == cat[0] %}btn-primary{% else %}btn-outline-primary{% endif %}">{{ cat[0] }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 position-relative z-pattern">
+                {% if product[2] %}
+                <img src="/{{ product[2] }}" class="card-img-top lazy" alt="{{ product[1] }}" style="object-fit:cover; height:200px;" loading="lazy">
+                {% else %}
+                <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height:200px;">No Image</div>
+                {% endif %}
+                <!-- Z-pattern overlay -->
+                <div class="z-overlay position-absolute top-0 start-0 w-100 h-100" style="pointer-events:none;"></div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ product[1] }}</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ url_for('product_viewer', product_id=product[0]) }}" class="btn btn-outline-primary btn-sm">View</a>
+                        <!-- WhatsApp share button -->
+                        <a href="https://wa.me/?text={{ 'Check out this product: ' + request.url_root ~ product[2] }}" target="_blank" class="btn btn-success btn-sm"><i class="bi bi-whatsapp"></i> Share</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12"><em>No products found.</em></div>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-3">Back to Dashboard</a>
+</div>
+
+<!-- Keyboard shortcuts JS -->
+<script>
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'F11') {
+            e.preventDefault();
+            document.documentElement.requestFullscreen();
+        }
+        if (e.key === 'Escape') {
+            if (document.fullscreenElement) document.exitFullscreen();
+        }
+        // Left/Right navigation can be implemented in product_viewer.html
+    });
+</script>
+
+<!-- Z-pattern overlay CSS -->
+<style>
+.z-pattern .z-overlay {
+    background: linear-gradient(135deg, rgba(198,0,47,0.08) 0%, rgba(0,90,156,0.08) 100%);
+    border-radius: 0.5rem;
+}
+</style>
+</body>
+</html> 

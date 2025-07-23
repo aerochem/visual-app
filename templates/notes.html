@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Doctor Notes{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Doctor Notes</h1>
+<form class="bg-white p-6 rounded-lg shadow-md max-w-xl mx-auto space-y-4" method="post">
+  <div>
+    <label class="block font-semibold mb-1">Notes</label>
+    <textarea class="w-full border rounded px-3 py-2 min-h-[120px]" name="notes">{{ notes|default('') }}</textarea>
+  </div>
+  <button class="bg-yellow-500 text-white px-6 py-2 rounded hover:bg-yellow-600 transition">Save Notes</button>
+</form>
+{% endblock %} 

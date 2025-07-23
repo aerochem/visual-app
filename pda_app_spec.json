@@ -1,0 +1,90 @@
+{
+  "project": "Visual Aid (PDA) App for Pharmaceutical MRs",
+  "branding": {
+    "theme_colors": {
+      "primary_red": "#C6002F",
+      "medical_gray": "#F4F4F4",
+      "accent_blue": "#005A9C",
+      "clean_white": "#FFFFFF",
+      "soft_black": "#1F1F1F"
+    },
+    "fonts": {
+      "headings": "Poppins",
+      "body": "Inter",
+      "weights": [
+        400,
+        600
+      ]
+    },
+    "logo_and_identity": {
+      "fields": [
+        "company_name",
+        "logo_upload",
+        "whatsapp_template"
+      ],
+      "display_locations": [
+        "navbar",
+        "login page",
+        "PDF headers",
+        "splash screen"
+      ]
+    }
+  },
+  "features": {
+    "visual_gallery": {
+      "description": "MRs can view visual product files from a preloaded gallery with category filters.",
+      "ui": {
+        "card_style": "rounded, hoverable, shadow-md",
+        "filter_style": "pills with active highlight",
+        "image_lazy_load": true
+      },
+      "fullscreen_mode": {
+        "z_pattern_overlay": true,
+        "keyboard_shortcuts": [
+          "\u2190",
+          "\u2192",
+          "Esc",
+          "F11"
+        ],
+        "whatsapp_share_button": true
+      }
+    },
+    "doctor_management": {
+      "add_doctor_form": [
+        "name",
+        "specialty dropdown",
+        "area",
+        "contact",
+        "email",
+        "product tags"
+      ],
+      "bulk_upload_csv": true,
+      "reminder_feature": true
+    },
+    "admin_features": {
+      "product_upload": "drag-drop JPG/PDF with category",
+      "user_creation": "email-based invite with password set",
+      "settings_page": [
+        "logo upload",
+        "company info",
+        "color control"
+      ],
+      "analytics": "activity by MR with chart view",
+      "user_role_visibility": "strict"
+    },
+    "mr_features": {
+      "change_password": true,
+      "whatsapp_share": "pre-filled message + product",
+      "set_visit_reminder": true,
+      "notes_per_doctor": true
+    },
+    "security": {
+      "role_based_ui": {
+        "admin": "full access",
+        "mr": "restricted dashboard",
+        "viewer": "read-only"
+      },
+      "session_check_required": true
+    }
+  }
+}

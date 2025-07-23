@@ -1,0 +1,48 @@
+📘 PDA (Product Detailing App) - FINAL UPDATED PRD (with Modal Mapping)
+-------------------------------------------------------------
+
+🎯 Project: Visual Aid (PDA) App for Pharmaceutical MRs
+
+🎨 Branding:
+ - Primary Red: #C6002F
+ - Medical Gray: #F4F4F4
+ - Accent Blue: #005A9C
+ - Clean White: #FFFFFF
+ - Soft Black: #1F1F1F
+ - Fonts: Headings - Poppins, Body - Inter
+
+🧩 Core Features:
+
+🔹 Visual Gallery:
+   • Description: MRs can view visual product files from a preloaded gallery with category filters.
+   • Card Style: rounded, hoverable, shadow-md
+   • Filter Style: pills with active highlight
+   • Image Lazy Load: True
+   • Z Pattern Overlay: True
+   • Keyboard Shortcuts: ['←', '→', 'Esc', 'F11']
+   • Whatsapp Share Button: True
+
+🔹 Doctor Management:
+   • Add Doctor Form: name, specialty dropdown, area, contact, email, product tags
+   • Bulk Upload Csv: True
+   • Reminder Feature: True
+   • Product Mapping Ui: Modal-based multi-select dropdown with thumbnails and search
+
+🔹 Admin Features:
+   • Product Upload: drag-drop JPG/PDF with category
+   • User Creation: email-based invite with password set
+   • Settings Page: logo upload, company info, color control
+   • Analytics: activity by MR with chart view
+   • User Role Visibility: strict
+
+🔹 Mr Features:
+   • Change Password: True
+   • Whatsapp Share: pre-filled message + product
+   • Set Visit Reminder: True
+   • Notes Per Doctor: True
+
+🔹 Security:
+   • Admin: full access
+   • Mr: restricted dashboard
+   • Viewer: read-only
+   • Session Check Required: True

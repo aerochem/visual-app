@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}PDA App{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <nav class="bg-white shadow px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <img src="/logo.png" alt="Logo" class="h-10 w-10 rounded"/>
+            <span class="font-bold text-xl text-[#C6002F]">{{ branding.logo_and_identity.fields[0]|default('Company Name') }}</span>
+        </div>
+        <div>
+            {% include 'navbar.html' %}
+        </div>
+    </nav>
+    <main class="container mx-auto py-8">
+        {% block content %}{% endblock %}
+    </main>
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

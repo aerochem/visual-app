@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map Products to Doctor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2>Map Products to Doctor</h2>
+    <h4 class="mb-4">Doctor: {{ doctor[1] }}</h4>
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Select Products:</label>
+            <div class="row">
+                {% for product in products %}
+                <div class="col-md-4 mb-2">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="product_ids" id="prod{{ product[0] }}" value="{{ product[0] }}" {% if product[0] in mapped %}checked{% endif %}>
+                        <label class="form-check-label" for="prod{{ product[0] }}">{{ product[1] }}</label>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Mapping</button>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary ms-2">Back to Dashboard</a>
+    </form>
+</div>
+</body>
+</html> 

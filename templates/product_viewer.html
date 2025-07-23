@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Product Viewer - PDA App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+      body, html { height: 100%; margin: 0; background: #222; color: #fff; }
+      .viewer-container { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+      .viewer-img { max-height: 70vh; max-width: 90vw; border-radius: 8px; box-shadow: 0 0 20px #000; background: #fff; }
+      .viewer-controls { margin-top: 2rem; }
+      .viewer-btn { min-width: 120px; font-size: 1.2rem; }
+      .viewer-title { margin-top: 1rem; font-size: 1.5rem; }
+      .progress-indicator { margin-top: 0.5rem; font-size: 1.1rem; color: #bbb; }
+      .thumb-strip { display: flex; gap: 8px; margin-top: 2rem; overflow-x: auto; }
+      .thumb-img { height: 60px; width: 80px; object-fit: cover; border-radius: 4px; border: 2px solid transparent; cursor: pointer; transition: border 0.2s; }
+      .thumb-img.active { border: 2px solid #0d6efd; }
+    </style>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'ArrowLeft') {
+            document.getElementById('prevBtn')?.click();
+          } else if (e.key === 'ArrowRight') {
+            document.getElementById('nextBtn')?.click();
+          }
+        });
+        // Touch swipe navigation
+        let startX = null;
+        document.addEventListener('touchstart', function(e) {
+          if (e.touches.length === 1) startX = e.touches[0].clientX;
+        });
+        document.addEventListener('touchend', function(e) {
+          if (startX !== null && e.changedTouches.length === 1) {
+            let dx = e.changedTouches[0].clientX - startX;
+            if (dx > 50) document.getElementById('prevBtn')?.click();
+            else if (dx < -50) document.getElementById('nextBtn')?.click();
+          }
+          startX = null;
+        });
+      });
+    </script>
+</head>
+<body>
+<div class="viewer-container">
+    <div class="viewer-title">{{ products[current][1] }}</div>
+    <div class="progress-indicator">Image {{ current+1 }} of {{ products|length }}</div>
+    <img src="/{{ products[current][2] }}" class="viewer-img" alt="Product Image">
+    <div class="viewer-controls mt-4">
+        <a href="{{ url_for('product_viewer', product_id=products[(current-1)%products|length][0]) }}" id="prevBtn" class="btn btn-light viewer-btn me-3">&larr; Previous</a>
+        <a href="{{ url_for('product_viewer', product_id=products[(current+1)%products|length][0]) }}" id="nextBtn" class="btn btn-light viewer-btn">Next &rarr;</a>
+    </div>
+    <div class="thumb-strip mt-4">
+      {% for prod in products %}
+        <img src="/{{ prod[2] }}" class="thumb-img{% if loop.index0 == current %} active{% endif %}" onclick="window.location='{{ url_for('product_viewer', product_id=prod[0]) }}'" alt="{{ prod[1] }}">
+      {% endfor %}
+    </div>
+    <a href="{{ url_for('gallery') }}" class="btn btn-outline-info mt-4">Back to Gallery</a>
+</div>
+</body>
+</html> 

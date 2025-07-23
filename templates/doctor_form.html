@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if doctor %}Edit Doctor{% else %}Add Doctor{% endif %} - PDA App</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <style>
+      .select2-results__option img, .select2-selection__choice__img {
+        height: 24px; width: 24px; object-fit: cover; margin-right: 8px; border-radius: 3px;
+      }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h2>{% if doctor %}Edit Doctor{% else %}Add Doctor{% endif %}</h2>
+    <form method="post">
+        <div class="mb-3">
+            <label for="name" class="form-label">Doctor Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ doctor[1] if doctor else '' }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="specialty" class="form-label">Specialty</label>
+            <input type="text" class="form-control" id="specialty" name="specialty" value="{{ doctor[2] if doctor else '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="area" class="form-label">Area</label>
+            <input type="text" class="form-control" id="area" name="area" value="{{ doctor[3] if doctor else '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="contact" class="form-label">Contact</label>
+            <input type="text" class="form-control" id="contact" name="contact" value="{{ doctor[4] if doctor else '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="{{ doctor[5] if doctor else '' }}">
+        </div>
+        <div class="mb-3">
+            <label for="product-tags" class="form-label">Mapped Products</label>
+            <select id="product-tags" name="product_ids" multiple class="form-select">
+              {% for product in products %}
+                <option value="{{ product[0] }}" data-image="/{{ product[2] }}" {% if product[0] in mapped %}selected{% endif %}>{{ product[1] }}</option>
+              {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">{% if doctor %}Update{% else %}Add{% endif %} Doctor</button>
+        <a href="{{ url_for('doctor_list') }}" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+$('#product-tags').select2({
+  templateResult: formatProduct,
+  templateSelection: formatProduct,
+  escapeMarkup: function(m) { return m; }
+});
+function formatProduct (state) {
+  if (!state.id) return state.text;
+  var img = $(state.element).data('image');
+  if (img) {
+    return '<img src="'+img+'" style="height:24px;width:24px;object-fit:cover;margin-right:8px;">' + state.text;
+  }
+  return state.text;
+}
+</script>
+</body>
+</html> 
